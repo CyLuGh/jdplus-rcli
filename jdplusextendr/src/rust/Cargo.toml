@@ -1,0 +1,35 @@
+[package]
+name = 'jdplusextendr'
+publish = false
+version = '0.1.0'
+edition = '2021'
+
+[lib]
+crate-type = [ 'rlib', 'staticlib' ]
+name = 'jdplusextendr'
+path = "src/lib.rs"
+
+[[bin]]
+name = 'document'
+path = 'document.rs'
+
+[dependencies]
+extendr-api = '*'
+tonic = "0.14"
+tonic-prost = "0.14"
+prost = "0.14"
+tokio = { version = "1", features = ["full"] }
+chrono = "0.4"
+
+[build-dependencies]
+prost-build = "0.14"
+protoc-bin-vendored = "3"
+tonic-prost-build = "0.14"
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[[example]]
+name = "version"
+path = "src/examples/version.rs"
