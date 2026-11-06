@@ -2,10 +2,10 @@
 % Please edit documentation in R/extendr-wrappers.R
 \name{get_version}
 \alias{get_version}
-\title{Return jplus version to R.}
+\title{Return jdplus version to R.}
 \usage{
 get_version()
 }
 \description{
-Return jplus version to R.
+Return jdplus version to R.
 }

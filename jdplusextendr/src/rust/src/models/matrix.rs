@@ -1,6 +1,8 @@
 use crate::jdplus_main_ws_v1::{MatrixDto, TsMatrixDto};
 use crate::models::TsPeriod;
+use extendr_api::prelude::*;
 
+#[extendr]
 pub struct Matrix {
     pub nrows: i32,
     pub ncols: i32,

@@ -5,7 +5,9 @@ use crate::jdplus_main_ws_v1::{
     TsPeriodDto, DateDto
 };
 
+use extendr_api::prelude::*;
 
+#[extendr]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct TsPeriod {
     pub frequency: Frequency,

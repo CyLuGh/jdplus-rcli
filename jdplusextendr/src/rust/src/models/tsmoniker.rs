@@ -1,22 +1,11 @@
-﻿use extendr_api::{extendr, list, List};
-use crate::jdplus_main_ws_v1::{
-    TsMonikerDto,
-};
+﻿use crate::jdplus_main_ws_v1::TsMonikerDto;
+use extendr_api::prelude::*;
 
+#[extendr]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TsMoniker {
     pub source: String,
     pub id: String,
-}
-
-#[extendr]
-impl TsMoniker {
-    fn get_moniker(&self) -> List {
-        list!(
-            source = self.source.clone(),
-            id = self.id.clone(),
-        )
-    }
 }
 
 impl Default for TsMoniker {

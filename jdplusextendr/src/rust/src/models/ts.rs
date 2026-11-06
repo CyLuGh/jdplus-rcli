@@ -1,14 +1,15 @@
 ﻿use crate::models::tsdata::TsData;
-use crate::models::tsmoniker::TsMoniker;
 
 use std::collections::HashMap;
 
 use crate::jdplus_main_ws_v1::{
+    TsDataDto,
     TsDto,
-    TsMonikerDto,
-    TsDataDto
-};
+    TsMonikerDto};
+use crate::models::tsmoniker::TsMoniker;
+use extendr_api::prelude::*;
 
+#[extendr]
 #[derive(Debug, Clone, PartialEq)]
 struct Ts {
     pub name: String,

@@ -5,6 +5,8 @@ use crate::jdplus_main_ws_v1::{
 
 use chrono::NaiveDate;
 use std::result::Result::Ok;
+use crate::models::{AggregationType, Frequency};
+use crate::models::tsdata::TsData;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
@@ -30,6 +32,54 @@ impl CommunicationManager {
         let version = response.into_inner();
 
         format!("{}.{}.{}", version.major, version.minor, version.revision)
+    }
+
+    pub async fn build_ts_data(
+        &self,
+        data: Vec<(NaiveDate, f64)>,
+        aggregation_type: AggregationType,
+        frequency: Frequency,
+        allow_partial_aggregation: bool,
+        include_missing_values: bool,
+    ) -> Result<TsData> {
+        let input = BuildTsDataInputDto {
+            id: String::from(""),
+            gathering: Some(ObsGatheringDto {
+                aggregation_type: aggregation_type as i32,
+                frequency: frequency as i32,
+                allow_partial_aggregation,
+                include_missing_values,
+            }),
+            observations: data
+                .iter()
+                .map(|(date, value)| BuildTsDataObsDto {
+                    date: Some(DateDto::from(*date)),
+                    value: *value,
+                })
+                .collect(),
+        };
+
+        let client = TsFunctionsClient::connect(self.url.clone()).await;
+
+        let dto = client?
+            .build_ts_data(input)
+            .await
+            .map_err(|e| format!("Error building ts-data: {}", e))?
+            .into_inner();
+
+        match dto.result {
+            Some(build_ts_data_result_dto::Result::Output(output)) => {
+                let series = output.series.ok_or("Missing series")?;
+
+                let data: TsData = series.try_into()?;
+
+                Ok(data)
+            }
+
+            Some(build_ts_data_result_dto::Result::Error(error)) => Err(error.message.into()),
+
+            None => Err("Missing result".into()),
+        }
     }
 }
 

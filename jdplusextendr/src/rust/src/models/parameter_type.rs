@@ -1,3 +1,6 @@
+use extendr_api::prelude::*;
+
+#[extendr]
 pub enum ParameterType {
     /// Similar to null
     Unused = 0,

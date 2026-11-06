@@ -1,14 +1,9 @@
-use extendr_api::{extendr, extendr_module};
-use crate::communication_manager::{CommunicationManager, CommunicationManagerBuilder};
+use crate::communication_manager::CommunicationManager;
+use extendr_api::prelude::*;
 
+#[extendr]
+/// Client to access JD+ grpc API
 pub struct JDClient {
-    //manager: CommunicationManager
-}
-
-impl JDClient {
-    pub fn new() -> Self {
-        Self {
-            //manager: CommunicationManager::builder().build()
-        }
-    }
+    /// Handler for connection and requests to API
+    pub manager: CommunicationManager
 }

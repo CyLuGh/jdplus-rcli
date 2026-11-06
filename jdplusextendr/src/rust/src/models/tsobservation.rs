@@ -1,5 +1,7 @@
 use chrono::NaiveDate;
+use extendr_api::prelude::*;
 
+#[extendr]
 pub struct TsObservation {
     /// For point observations, start should be equal to end. Otherwise, start is included in the period corresponding to the observation.
     pub start: NaiveDate,

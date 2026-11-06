@@ -1,4 +1,7 @@
-﻿#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+﻿use extendr_api::prelude::*;
+
+#[extendr]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AggregationType {
     None = 0,
     Sum = 1,
@@ -21,5 +24,15 @@ impl From<i32> for AggregationType {
             6 => AggregationType::Min,
             _ => AggregationType::None,
         }
+    }
+}
+
+
+impl TryFrom<&Robj> for AggregationType {
+    type Error = Error;
+
+    fn try_from(value: &Robj) -> Result<Self, Self::Error> {
+        let x: i32 = value.try_into()?;
+        Ok(AggregationType::from(x))
     }
 }

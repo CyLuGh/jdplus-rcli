@@ -1,4 +1,6 @@
-﻿
+﻿use extendr_api::prelude::*;
+
+#[extendr]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Frequency {
     Undefined = 0,
@@ -21,5 +23,14 @@ impl From<i32> for Frequency {
             12 => Frequency::Monthly,
             _ => Frequency::Undefined,
         }
+    }
+}
+
+impl TryFrom<&Robj> for Frequency {
+    type Error = Error;
+
+    fn try_from(value: &Robj) -> Result<Self, Self::Error> {
+        let x: i32 = value.try_into()?;
+        Ok(Frequency::from(x))
     }
 }

@@ -9,8 +9,55 @@ NULL
 #' @export
 hello_world <- function() .Call(wrap__hello_world)
 
-#' Return jplus version to R.
+#' Return jdplus version to R.
 #' @export
 get_version <- function() .Call(wrap__get_version)
+
+TsMoniker <- new.env(parent = emptyenv())
+
+TsMoniker$new <- function(source, id) .Call(wrap__TsMoniker__new, source, id)
+
+TsMoniker$get_moniker <- function() .Call(wrap__TsMoniker__get_moniker, self)
+
+#' @export
+`$.TsMoniker` <- function (self, name) { func <- TsMoniker[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.TsMoniker` <- `$.TsMoniker`
+
+TsData <- new.env(parent = emptyenv())
+
+TsData$get_data_frame <- function() .Call(wrap__TsData__get_data_frame, self)
+
+#' @export
+`$.TsData` <- function (self, name) { func <- TsData[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.TsData` <- `$.TsData`
+
+#' Client to access JD+ grpc API
+#'
+#' @section Methods:
+#'\subsection{Method `new`}{
+#'Creates new client, if url is NULL or empty, it uses default value `http://localhost:4566`.
+#'}
+#'
+#'\subsection{Method `get_version`}{
+#'Returns API version
+#'}
+#'
+JDClient <- new.env(parent = emptyenv())
+
+JDClient$new <- function(url = NULL) .Call(wrap__JDClient__new, url)
+
+JDClient$get_version <- function() .Call(wrap__JDClient__get_version, self)
+
+JDClient$build_ts_data <- function(data, aggregation_type = 1, frequency = 1, allow_partial_aggregation = TRUE, include_missing_values = TRUE) .Call(wrap__JDClient__build_ts_data, self, data, aggregation_type, frequency, allow_partial_aggregation, include_missing_values)
+
+#' @export
+`$.JDClient` <- function (self, name) { func <- JDClient[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.JDClient` <- `$.JDClient`
 
 # nolint end

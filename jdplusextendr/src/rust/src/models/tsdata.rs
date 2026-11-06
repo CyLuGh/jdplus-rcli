@@ -5,7 +5,9 @@ use chrono::{Months, NaiveDate};
 use crate::models::tsperiod::TsPeriod;
 use crate::jdplus_main_ws_v1::TsDataDto;
 use crate::jdplus_main_ws_v1::TsPeriodDto;
+use extendr_api::prelude::*;
 
+#[extendr]
 #[derive(Debug, Clone, PartialEq)]
 pub struct TsData {
     pub start: TsPeriod,
