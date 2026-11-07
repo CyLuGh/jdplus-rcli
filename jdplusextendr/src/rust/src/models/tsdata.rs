@@ -6,6 +6,7 @@ use crate::models::tsperiod::TsPeriod;
 use crate::jdplus_main_ws_v1::TsDataDto;
 use crate::jdplus_main_ws_v1::TsPeriodDto;
 use extendr_api::prelude::*;
+use crate::models::TsMoniker;
 
 #[extendr]
 #[derive(Debug, Clone, PartialEq)]
@@ -96,4 +97,10 @@ impl From<TsData> for TsDataDto {
             values: ts.values,
         }
     }
+}
+
+#[extendr]
+pub struct DynamicTsData {
+    pub moniker: TsMoniker,
+    pub current: TsData
 }

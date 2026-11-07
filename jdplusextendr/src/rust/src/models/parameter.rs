@@ -1,5 +1,11 @@
 use extendr_api::prelude::*;
 
+pub struct Parameter {
+    pub value: f64,
+    pub parameter_type: ParameterType,
+    pub description: String,
+}
+
 #[extendr]
 pub enum ParameterType {
     /// Similar to null
