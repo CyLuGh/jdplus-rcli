@@ -1,9 +1,22 @@
+use crate::jdplus_main_ws_v1::ParameterDto;
 use extendr_api::prelude::*;
 
 pub struct Parameter {
     pub value: f64,
     pub parameter_type: ParameterType,
     pub description: String,
+}
+
+impl TryFrom<ParameterDto> for Parameter {
+    type Error = String;
+
+    fn try_from(dto: ParameterDto) -> Result<Self, Self::Error> {
+        Ok(Self {
+            value: dto.value,
+            description: dto.description,
+            parameter_type: ParameterType::from(dto.r#type),
+        })
+    }
 }
 
 #[extendr]

@@ -1,12 +1,15 @@
 use crate::jdplus_main_ws_v1::{
-    BuildTsDataInputDto, BuildTsDataObsDto, DateDto, EmptyDto, ObsGatheringDto,
-    build_ts_data_result_dto, ts_functions_client::TsFunctionsClient,
+    build_ts_data_result_dto, tramo_full_process_result_dto,
+    ts_functions_client::TsFunctionsClient, BuildTsDataInputDto, BuildTsDataObsDto, DateDto,
+    EmptyDto, ObsGatheringDto, TramoRequestDto, TsDataDto,
 };
 
+use crate::jdplus_main_ws_v1::tramo_request_dto::Spec::DefSpec;
+use crate::models::tramo_output::TramoOutput;
+use crate::models::tsdata::TsData;
+use crate::models::{AggregationType, Frequency};
 use chrono::NaiveDate;
 use std::result::Result::Ok;
-use crate::models::{AggregationType, Frequency};
-use crate::models::tsdata::TsData;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
@@ -70,13 +73,43 @@ impl CommunicationManager {
         match dto.result {
             Some(build_ts_data_result_dto::Result::Output(output)) => {
                 let series = output.series.ok_or("Missing series")?;
-
                 let data: TsData = series.try_into()?;
-
                 Ok(data)
             }
 
             Some(build_ts_data_result_dto::Result::Error(error)) => Err(error.message.into()),
+
+            None => Err("Missing result".into()),
+        }
+    }
+
+    pub async fn get_tramo_full_process(
+        &self,
+        series: TsData,
+        spec: String,
+    ) -> Result<TramoOutput> {
+        let input = TramoRequestDto {
+            n_forecasts: 0,
+            series: Some(TsDataDto::from(series)),
+            id: String::from("TODO"),
+            modelling_context: None,
+            spec: Some(DefSpec(spec)),
+        };
+
+        let client = TsFunctionsClient::connect(self.url.clone()).await;
+
+        let response = client?
+            .tramo_full_process(input)
+            .await
+            .map_err(|e| e.to_string())?
+            .into_inner();
+
+        match response.result {
+            Some(tramo_full_process_result_dto::Result::Output(output)) => {
+                Ok(TramoOutput::try_from(output)?)
+            }
+
+            Some(tramo_full_process_result_dto::Result::Error(error)) => Err(error.message.into()),
 
             None => Err("Missing result".into()),
         }

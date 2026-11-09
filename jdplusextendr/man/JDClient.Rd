@@ -18,5 +18,33 @@ Creates new client, if url is NULL or empty, it uses default value \verb{http://
 \subsection{Method \code{get_version}}{
 Returns API version
 }
+
+\subsection{Method \code{build_ts_data}}{
+Build TS Data from raw inputArguments
+\itemize{
+\item \code{aggregation_type} defines how to aggregate data if there is more than one occurrence for the same period.
+| Value | Meaning |
+|:--:|:--|
+|0|None|
+|1|Sum|
+|2|Average|
+|3|First|
+|4|Last|
+|5|Max|
+|6|Min|
+\item \code{frequency} defines the frequency of build series
+| Value | Meaning |
+|:--:|:--|
+|0|Undefined|
+|1|Yearly|
+|2|Half yearly|
+|3|Quadrimonthly|
+|4|Quarterly|
+|6|Bimonthly|
+|12|Monthly|
+}Returns
+
+A TsData
+}
 }
 

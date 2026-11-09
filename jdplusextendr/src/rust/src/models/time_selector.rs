@@ -1,3 +1,4 @@
+use crate::jdplus_main_ws_v1::TimeSelectorDto;
 use chrono::NaiveDate;
 use extendr_api::prelude::*;
 
@@ -36,4 +37,23 @@ pub struct TimeSelector {
     pub n1: i32,
     pub d0: Option<NaiveDate>,
     pub d1: Option<NaiveDate>,
+}
+impl TryFrom<TimeSelectorDto> for TimeSelector {
+    type Error = String;
+
+    fn try_from(dto: TimeSelectorDto) -> Result<Self, Self::Error> {
+        Ok(Self {
+            selection_type: SelectionType::from(dto.r#type),
+            n0: dto.n0,
+            n1: dto.n1,
+            d0: match dto.d0 {
+                Some(date) => Some(NaiveDate::from(date)),
+                None => None,
+            },
+            d1: match dto.d1 {
+                Some(date) => Some(NaiveDate::from(date)),
+                None => None,
+            },
+        })
+    }
 }

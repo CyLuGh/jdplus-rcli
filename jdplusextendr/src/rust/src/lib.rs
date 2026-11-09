@@ -5,9 +5,9 @@ pub mod models;
 use crate::communication_manager::CommunicationManager;
 use crate::jd_client::JDClient;
 use crate::models::{AggregationType, Frequency, TsMoniker};
-use chrono::NaiveDate;
 use extendr_api::prelude::*;
 
+use crate::models::tramo_output::TramoOutput;
 use crate::models::tsdata::TsData;
 use once_cell::sync::Lazy;
 use tokio::runtime::Runtime;
@@ -81,7 +81,36 @@ impl JDClient {
         RUNTIME.block_on(self.manager.get_version())
     }
 
-    // df <- data.frame( date = c("2024-01-01","2024-02-01"), value = c(10,20))
+    // client <- JDClient$new()
+    // df <- data.frame( date = c("2024-01-01","2024-02-01","2024-03-01"), value = c(10,20,13.5))
+    // res <- client$build_ts_data(df, AggregationType$Sum)$get_data_frame()
+    /// Build TS Data from raw input
+    ///
+    /// # Arguments
+    ///
+    /// * `aggregation_type` defines how to aggregate data if there is more than one occurrence for the same period.
+    /// | Value | Meaning |
+    /// |:--:|:--|
+    /// |0|None|
+    /// |1|Sum|
+    /// |2|Average|
+    /// |3|First|
+    /// |4|Last|
+    /// |5|Max|
+    /// |6|Min|
+    /// * `frequency` defines the frequency of build series
+    /// | Value | Meaning |
+    /// |:--:|:--|
+    /// |0|Undefined|
+    /// |1|Yearly|
+    /// |2|Half yearly|
+    /// |3|Quadrimonthly|
+    /// |4|Quarterly|
+    /// |6|Bimonthly|
+    /// |12|Monthly|
+    ///
+    /// # Returns
+    /// A TsData
     pub fn build_ts_data(
         &self,
         data: List,
@@ -90,13 +119,7 @@ impl JDClient {
         #[extendr(default = "TRUE")] allow_partial_aggregation: bool,
         #[extendr(default = "TRUE")] include_missing_values: bool,
     ) -> TsData {
-        let dates: Vec<String> = data.dollar("date").unwrap().as_string_vector().unwrap();
-        let values: Vec<f64> = data.dollar("value").unwrap().as_real_vector().unwrap();
-        let vec: Vec<(NaiveDate, f64)> = dates
-            .iter()
-            .zip(values.iter())
-            .map(|(d, v)| (NaiveDate::parse_from_str(d, "%Y-%m-%d").unwrap(), *v))
-            .collect();
+        let vec = JDClient::datatable_to_tuples(data);
 
         RUNTIME
             .block_on(self.manager.build_ts_data(
@@ -106,6 +129,14 @@ impl JDClient {
                 allow_partial_aggregation,
                 include_missing_values,
             ))
+            .unwrap()
+    }
+
+    pub fn tramo_full_process_simple_def(&self, data: List, #[extendr(default = "'TRfull'")] spec: String) -> TramoOutput {
+        let series = self.build_ts_data(data, 0, 0, true, true);
+
+        RUNTIME
+            .block_on(self.manager.get_tramo_full_process(series, spec))
             .unwrap()
     }
 }

@@ -46,6 +46,36 @@ TsData$get_data_frame <- function() .Call(wrap__TsData__get_data_frame, self)
 #'Returns API version
 #'}
 #'
+#'\subsection{Method `build_ts_data`}{
+#'Build TS Data from raw input
+#'
+#'# Arguments
+#'
+#'* `aggregation_type` defines how to aggregate data if there is more than one occurrence for the same period.
+#'| Value | Meaning |
+#'|:--:|:--|
+#'|0|None|
+#'|1|Sum|
+#'|2|Average|
+#'|3|First|
+#'|4|Last|
+#'|5|Max|
+#'|6|Min|
+#'* `frequency` defines the frequency of build series
+#'| Value | Meaning |
+#'|:--:|:--|
+#'|0|Undefined|
+#'|1|Yearly|
+#'|2|Half yearly|
+#'|3|Quadrimonthly|
+#'|4|Quarterly|
+#'|6|Bimonthly|
+#'|12|Monthly|
+#'
+#'# Returns
+#'A TsData
+#'}
+#'
 JDClient <- new.env(parent = emptyenv())
 
 JDClient$new <- function(url = NULL) .Call(wrap__JDClient__new, url)
@@ -53,6 +83,8 @@ JDClient$new <- function(url = NULL) .Call(wrap__JDClient__new, url)
 JDClient$get_version <- function() .Call(wrap__JDClient__get_version, self)
 
 JDClient$build_ts_data <- function(data, aggregation_type = 1, frequency = 1, allow_partial_aggregation = TRUE, include_missing_values = TRUE) .Call(wrap__JDClient__build_ts_data, self, data, aggregation_type, frequency, allow_partial_aggregation, include_missing_values)
+
+JDClient$tramo_full_process_simple_def <- function(data, spec = 'TRfull') .Call(wrap__JDClient__tramo_full_process_simple_def, self, data, spec)
 
 #' @export
 `$.JDClient` <- function (self, name) { func <- JDClient[[name]]; environment(func) <- environment(); func }

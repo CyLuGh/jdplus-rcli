@@ -34,3 +34,11 @@ codegen-units = 1
 [[example]]
 name = "version"
 path = "src/examples/version.rs"
+
+[[example]]
+name = "build_ts"
+path = "src/examples/build_ts.rs"
+
+[[example]]
+name = "tramo_full"
+path = "src/examples/tramo_full.rs"

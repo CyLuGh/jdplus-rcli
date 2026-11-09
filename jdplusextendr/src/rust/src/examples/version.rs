@@ -1,3 +1,5 @@
+pub mod build_ts;
+
 use jdplusextendr::communication_manager::CommunicationManager;
 
 #[tokio::main]

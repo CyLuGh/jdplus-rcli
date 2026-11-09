@@ -1,7 +1,7 @@
 use extendr_api::prelude::*;
 use crate::models::length_of_period::LengthOfPeriod;
 use crate::models::regression_variable::RegressionVariable;
-use crate::models::sarima_spec::SarimaSpec;
+use crate::models::specs::SarimaSpec;
 use crate::models::tsdata::TsData;
 
 #[extendr]
