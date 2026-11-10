@@ -3,6 +3,7 @@ use crate::models::TsPeriod;
 use extendr_api::prelude::*;
 
 #[extendr]
+#[derive(Debug)]
 pub struct Matrix {
     pub nrows: i32,
     pub ncols: i32,

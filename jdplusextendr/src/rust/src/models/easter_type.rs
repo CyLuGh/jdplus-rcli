@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum EasterType {
     EasterUnused = 0,
     EasterStandard = 1,

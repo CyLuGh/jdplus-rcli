@@ -1,6 +1,8 @@
 use crate::jdplus_main_ws_v1::ParameterDto;
 use extendr_api::prelude::*;
 
+#[extendr]
+#[derive(Debug, Clone)]
 pub struct Parameter {
     pub value: f64,
     pub parameter_type: ParameterType,
@@ -20,6 +22,7 @@ impl TryFrom<ParameterDto> for Parameter {
 }
 
 #[extendr]
+#[derive(Debug,Clone)]
 pub enum ParameterType {
     /// Similar to null
     Unused = 0,

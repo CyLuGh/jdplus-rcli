@@ -1,6 +1,7 @@
 pub mod communication_manager;
 pub mod jd_client;
 pub mod models;
+pub mod samples;
 
 use crate::communication_manager::CommunicationManager;
 use crate::jd_client::JDClient;
@@ -86,7 +87,7 @@ impl JDClient {
     // res <- client$build_ts_data(df, AggregationType$Sum)$get_data_frame()
     /// Build TS Data from raw input
     ///
-    /// # Arguments
+    /// Arguments
     ///
     /// * `aggregation_type` defines how to aggregate data if there is more than one occurrence for the same period.
     /// | Value | Meaning |
@@ -109,7 +110,7 @@ impl JDClient {
     /// |6|Bimonthly|
     /// |12|Monthly|
     ///
-    /// # Returns
+    /// Returns
     /// A TsData
     pub fn build_ts_data(
         &self,
@@ -118,26 +119,57 @@ impl JDClient {
         #[extendr(default = "1")] frequency: i32,
         #[extendr(default = "TRUE")] allow_partial_aggregation: bool,
         #[extendr(default = "TRUE")] include_missing_values: bool,
-    ) -> TsData {
-        let vec = JDClient::datatable_to_tuples(data);
+    ) -> Result<TsData, Error> {
+        let try_vec = JDClient::datatable_to_tuples(data);
 
-        RUNTIME
-            .block_on(self.manager.build_ts_data(
+        match try_vec {
+            Ok(vec) => Ok(RUNTIME.block_on(self.manager.build_ts_data(
                 vec,
                 AggregationType::from(aggregation_type),
                 Frequency::from(frequency),
                 allow_partial_aggregation,
                 include_missing_values,
-            ))
-            .unwrap()
+            ))?),
+            Err(e) => Err(Error::Other(format!("Couldn't build ts-data: {}", e))),
+        }
     }
 
-    pub fn tramo_full_process_simple_def(&self, data: List, #[extendr(default = "'TRfull'")] spec: String) -> TramoOutput {
+    pub fn tramo_full_process_simple_def(
+        &self,
+        data: List,
+        #[extendr(default = "'TRfull'")] spec: String,
+    ) -> Result<TramoOutput, Error> {
         let series = self.build_ts_data(data, 0, 0, true, true);
 
-        RUNTIME
-            .block_on(self.manager.get_tramo_full_process(series, spec))
-            .unwrap()
+        match series {
+            Ok(series) => Ok(RUNTIME.block_on(self.manager.get_tramo_full_process(series, spec))?),
+            Err(e) => Err(Error::Other(format!(
+                "Ts data wasn't properly built: {}",
+                e
+            ))),
+        }
+    }
+}
+
+#[extendr]
+impl TramoOutput {
+    pub fn get_outliers_as_data_frame(&self) -> List {
+        let outliers = self.get_outliers();
+
+        let mut entries: Vec<_> = outliers.into_iter().collect();
+        entries.sort_by_key(|o| o.period);
+
+        let dates: Vec<String> = entries.iter().map(|o| o.period.to_string()).collect();
+        let values: Vec<f64> = entries.iter().map(|o| o.value).collect();
+        let codes: Vec<String> = entries.iter().map(|o| o.code.clone()).collect();
+        let coefficients: Vec<f64> = entries.iter().map(|o| o.coefficient.value).collect();
+
+        List::from_pairs([
+            ("date", r!(dates)),
+            ("values", r!(values)),
+            ("codes", r!(codes)),
+            ("coefficients", r!(coefficients)),
+        ])
     }
 }
 
@@ -153,4 +185,5 @@ extendr_module! {
     impl TsMoniker;
     impl TsData;
     impl JDClient;
+    impl TramoOutput;
 }

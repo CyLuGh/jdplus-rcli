@@ -20,7 +20,9 @@ Returns API version
 }
 
 \subsection{Method \code{build_ts_data}}{
-Build TS Data from raw inputArguments
+Build TS Data from raw input
+
+Arguments
 \itemize{
 \item \code{aggregation_type} defines how to aggregate data if there is more than one occurrence for the same period.
 | Value | Meaning |
@@ -42,8 +44,9 @@ Build TS Data from raw inputArguments
 |4|Quarterly|
 |6|Bimonthly|
 |12|Monthly|
-}Returns
+}
 
+Returns
 A TsData
 }
 }

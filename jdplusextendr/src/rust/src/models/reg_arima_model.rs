@@ -13,6 +13,7 @@ use extendr_api::prelude::*;
 use std::collections::HashMap;
 
 #[extendr]
+#[derive(Debug)]
 pub struct RegArimaModel {
     pub description: Description,
     pub estimation: Estimation,
@@ -32,6 +33,7 @@ impl TryFrom<RegArimaModelDto> for RegArimaModel {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct Description {
     pub series: TsData,
     pub log: bool,
@@ -59,6 +61,7 @@ impl TryFrom<DescriptionDto> for Description {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct Estimation {
     pub y: Vec<f64>,
     pub x: Matrix,
@@ -91,6 +94,7 @@ impl TryFrom<EstimationDto> for Estimation {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct ParametersEstimation {
     pub value: Vec<f64>,
     pub score: Vec<f64>,
@@ -112,6 +116,7 @@ impl TryFrom<ParametersEstimationDto> for ParametersEstimation {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct MissingEstimation {
     pub position: i32,
     pub value: f64,
@@ -129,6 +134,7 @@ impl From<MissingEstimationDto> for MissingEstimation {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct Diagnostics {
     pub residuals_tests: HashMap<String, StatisticalTest>,
 }

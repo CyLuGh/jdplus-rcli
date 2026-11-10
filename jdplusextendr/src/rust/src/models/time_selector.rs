@@ -3,6 +3,7 @@ use chrono::NaiveDate;
 use extendr_api::prelude::*;
 
 #[extendr]
+#[derive(Debug)]
 pub enum SelectionType {
     SpanAll = 0,
     SpanFrom = 1,
@@ -31,6 +32,7 @@ impl From<i32> for SelectionType {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct TimeSelector {
     pub selection_type: SelectionType,
     pub n0: i32,

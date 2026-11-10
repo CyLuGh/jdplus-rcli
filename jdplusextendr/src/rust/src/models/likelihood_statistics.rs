@@ -2,6 +2,7 @@ use crate::jdplus_main_ws_v1::LikelihoodStatisticsDto;
 use extendr_api::prelude::*;
 
 #[extendr]
+#[derive(Debug)]
 pub struct LikelihoodStatistics {
     pub n_obs: i32,
     pub n_effective_obs: i32,

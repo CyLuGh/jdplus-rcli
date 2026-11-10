@@ -3,6 +3,7 @@ use extendr_api::prelude::*;
 
 #[extendr]
 // Rename to DoublesSeq because Doubles already exists in extendr
+#[derive(Debug)]
 pub struct DoublesSeq {
     pub name: String,
     pub values: Vec<f64>,

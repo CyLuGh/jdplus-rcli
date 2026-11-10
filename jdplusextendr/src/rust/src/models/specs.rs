@@ -15,6 +15,7 @@ use extendr_api::prelude::*;
 use std::collections::HashMap;
 
 #[extendr]
+#[derive(Debug)]
 pub struct BasicSpec {
     pub span: TimeSelector,
     pub preliminary_check: bool,
@@ -34,6 +35,7 @@ impl TryFrom<BasicSpecDto> for BasicSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct TransformSpec {
     pub transformation: Transformation,
     pub fct: f64,
@@ -55,6 +57,7 @@ impl TryFrom<TransformSpecDto> for TransformSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct OutlierSpec {
     pub enabled: bool,
     pub span: TimeSelector,
@@ -86,6 +89,7 @@ impl TryFrom<OutlierSpecDto> for OutlierSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct SarimaSpec {
     pub period: i32,
     pub phi: Vec<Parameter>,
@@ -158,6 +162,7 @@ impl From<AutoModelSpecDto> for AutoModelSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct RegressionSpec {
     pub mean: Option<Parameter>,
     pub check_mean: bool,
@@ -203,6 +208,7 @@ impl TryFrom<RegressionSpecDto> for RegressionSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct TradingDaysSpec {
     pub td: TradingDays,
     pub lp: LengthOfPeriod,
@@ -242,6 +248,7 @@ impl TryFrom<TradingDaysSpecDto> for TradingDaysSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct EasterSpec {
     pub easter_type: EasterType,
     pub duration: i32,
@@ -265,6 +272,7 @@ impl TryFrom<EasterSpecDto> for EasterSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct Outlier {
     pub name: String,
     pub code: String,
@@ -288,6 +296,7 @@ impl TryFrom<OutlierDto> for Outlier {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct TsVariable {
     pub name: String,
     pub id: String,
@@ -311,6 +320,7 @@ impl TryFrom<TsVariableDto> for TsVariable {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct InterventionVariable {
     pub name: String,
     pub sequences: Vec<Sequence>,
@@ -340,6 +350,7 @@ impl TryFrom<InterventionVariableDto> for InterventionVariable {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct Sequence {
     pub start: NaiveDate,
     pub end: NaiveDate,
@@ -357,6 +368,7 @@ impl TryFrom<SequenceDto> for Sequence {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct Ramp {
     pub name: String,
     pub start: NaiveDate,
@@ -380,6 +392,7 @@ impl TryFrom<RampDto> for Ramp {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct EstimateSpec {
     pub span: TimeSelector,
     pub ml: bool,
@@ -401,6 +414,7 @@ impl TryFrom<EstimateSpecDto> for EstimateSpec {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct TramoSpec {
     pub basic: BasicSpec,
     pub transform: TransformSpec,

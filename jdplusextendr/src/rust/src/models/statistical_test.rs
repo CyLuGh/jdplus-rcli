@@ -2,6 +2,7 @@ use crate::jdplus_main_ws_v1::StatisticalTestDto;
 use extendr_api::prelude::*;
 
 #[extendr]
+#[derive(Debug)]
 pub struct StatisticalTest {
     pub value: f64,
     pub p_value: f64,

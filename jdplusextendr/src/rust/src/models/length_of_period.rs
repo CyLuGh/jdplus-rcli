@@ -1,6 +1,7 @@
 use extendr_api::prelude::*;
 
 #[extendr]
+#[derive(Debug)]
 pub enum LengthOfPeriod {
     None = 0,
     LeapYear = 1,

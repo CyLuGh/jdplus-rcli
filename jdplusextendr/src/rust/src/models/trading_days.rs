@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum TradingDays {
     TDNone = 0,
     /// MON-FRI + SAT-SUN
@@ -28,6 +29,7 @@ impl From<i32> for TradingDays {
     }
 }
 
+#[derive(Debug)]
 pub enum TradingDaysTest {
     No = 0,
     SeparateT = 1,
@@ -45,6 +47,7 @@ impl From<i32> for TradingDaysTest {
     }
 }
 
+#[derive(Debug)]
 pub enum AutomaticTradingDays {
     No = 0,
     FTest = 1,

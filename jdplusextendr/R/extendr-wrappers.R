@@ -49,7 +49,7 @@ TsData$get_data_frame <- function() .Call(wrap__TsData__get_data_frame, self)
 #'\subsection{Method `build_ts_data`}{
 #'Build TS Data from raw input
 #'
-#'# Arguments
+#'Arguments
 #'
 #'* `aggregation_type` defines how to aggregate data if there is more than one occurrence for the same period.
 #'| Value | Meaning |
@@ -72,7 +72,7 @@ TsData$get_data_frame <- function() .Call(wrap__TsData__get_data_frame, self)
 #'|6|Bimonthly|
 #'|12|Monthly|
 #'
-#'# Returns
+#'Returns
 #'A TsData
 #'}
 #'
@@ -91,5 +91,15 @@ JDClient$tramo_full_process_simple_def <- function(data, spec = 'TRfull') .Call(
 
 #' @export
 `[[.JDClient` <- `$.JDClient`
+
+TramoOutput <- new.env(parent = emptyenv())
+
+TramoOutput$get_outliers_as_data_frame <- function() .Call(wrap__TramoOutput__get_outliers_as_data_frame, self)
+
+#' @export
+`$.TramoOutput` <- function (self, name) { func <- TramoOutput[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.TramoOutput` <- `$.TramoOutput`
 
 # nolint end

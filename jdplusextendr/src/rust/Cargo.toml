@@ -27,6 +27,9 @@ prost-build = "0.14"
 protoc-bin-vendored = "3"
 tonic-prost-build = "0.14"
 
+[dev-dependencies]
+extendr-engine = "*"
+
 [profile.release]
 lto = true
 codegen-units = 1

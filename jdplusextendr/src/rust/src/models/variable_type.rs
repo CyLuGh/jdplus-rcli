@@ -1,6 +1,7 @@
 use extendr_api::prelude::*;
 
 #[extendr]
+#[derive(Debug)]
 pub enum VariableType {
     Unspecified = 0,
     Mean = 1,

@@ -1,3 +1,5 @@
+Sys.setenv(RUST_BACKTRACE = "full")
+
 library(readxl)
 
 raw <- read_excel("/Users/jed/Documents/GitHub/jdplus-rcli/jdplusextendr/tests/data.xlsx",
@@ -12,7 +14,13 @@ d <- x[-(1:3)]
 y <- raw[[2]]
 v <- y[-(1:3)]
 
-df <- data.frame( date = d , value = v)
+df <- data.frame( 
+  date = format(as.Date(d), "%Y-%m-%d") , 
+  value = as.numeric(v),
+  stringsAsFactors = FALSE
+)
 
 client <- JDClient$new()
-tramo <- client$tramo_full_process_simple_def(df)
+tramo <- client$tramo_full_process_simple_def(df,"TRfull")
+
+outliers <- tramo$get_outliers_as_data_frame()

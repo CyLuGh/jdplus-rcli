@@ -5,6 +5,7 @@ use extendr_api::prelude::*;
 use std::collections::HashMap;
 
 #[extendr]
+#[derive(Debug)]
 pub struct RegressionVariable {
     pub name: String,
     pub variable_type: VariableType,

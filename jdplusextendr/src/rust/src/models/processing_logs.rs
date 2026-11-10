@@ -9,6 +9,7 @@ use crate::models::information_type::InformationType;
 use extendr_api::prelude::*;
 
 #[extendr]
+#[derive(Debug)]
 pub struct ProcessingLogs {
     pub log: Vec<ProcessingInformation>,
 }
@@ -28,6 +29,7 @@ impl TryFrom<ProcessingLogsDto> for ProcessingLogs {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct ProcessingInformation {
     pub name: String,
     pub origin: String,
@@ -51,6 +53,7 @@ impl TryFrom<ProcessingInformationDto> for ProcessingInformation {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub struct ProcessingDetail {
     pub data: ProcessingDetailOneOf,
 }
@@ -86,6 +89,7 @@ impl TryFrom<ProcessingDetailDto> for ProcessingDetail {
 }
 
 #[extendr]
+#[derive(Debug)]
 pub enum ProcessingDetailOneOf {
     TsData(TsData),
     Array(DoublesSeq),
