@@ -1,6 +1,6 @@
 use crate::jdplus_main_ws_v1::{
-    build_ts_data_result_dto, tramo_full_process_result_dto,
-    ts_functions_client::TsFunctionsClient, BuildTsDataInputDto, BuildTsDataObsDto, DateDto,
+    build_ts_data_response_dto, tramo_full_process_response_dto,
+    ts_functions_client::TsFunctionsClient, BuildTsDataRequestDto, BuildTsDataObsDto, DateDto,
     EmptyDto, ObsGatheringDto, TramoRequestDto, TsDataDto,
 };
 
@@ -45,7 +45,7 @@ impl CommunicationManager {
         allow_partial_aggregation: bool,
         include_missing_values: bool,
     ) -> Result<TsData> {
-        let input = BuildTsDataInputDto {
+        let input = BuildTsDataRequestDto {
             id: String::from(""),
             gathering: Some(ObsGatheringDto {
                 aggregation_type: aggregation_type as i32,
@@ -71,13 +71,13 @@ impl CommunicationManager {
             .into_inner();
 
         match dto.result {
-            Some(build_ts_data_result_dto::Result::Output(output)) => {
+            Some(build_ts_data_response_dto::Result::Ok(output)) => {
                 let series = output.series.ok_or("Missing series")?;
                 let data: TsData = series.try_into()?;
                 Ok(data)
             }
 
-            Some(build_ts_data_result_dto::Result::Error(error)) => Err(error.message.into()),
+            Some(build_ts_data_response_dto::Result::Err(error)) => Err(error.message.into()),
 
             None => Err("Missing result".into()),
         }
@@ -105,11 +105,11 @@ impl CommunicationManager {
             .into_inner();
 
         match response.result {
-            Some(tramo_full_process_result_dto::Result::Output(output)) => {
+            Some(tramo_full_process_response_dto::Result::Ok(output)) => {
                 Ok(TramoOutput::try_from(output)?)
             }
 
-            Some(tramo_full_process_result_dto::Result::Error(error)) => Err(error.message.into()),
+            Some(tramo_full_process_response_dto::Result::Err(error)) => Err(error.message.into()),
 
             None => Err("Missing result".into()),
         }
